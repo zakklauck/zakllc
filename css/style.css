@@ -1,0 +1,26 @@
+html, body {overflow: hidden; margin: 0; padding: 0;/* !!! */}
+
+	
+	.info, .text{
+		font-family: arial, sans-serifs;		
+		font-size: 18px;
+		line-height: 22px;
+		font-weight: normal;
+		color: white;
+		text-align: left;
+		letter-spacing:2px;
+		margin: 15px; 
+		height: 66px;
+		width: 200px;
+	}
+	
+	.text {
+		color: #191919;
+		}
+	
+	
+	a:link {text-decoration: none; color: white;} 
+	a:visited {text-decoration: none; color: white;} 
+	a:hover  {text-decoration: none; color: #191919;} 
+	a:active {text-decoration: none;} 
+	
