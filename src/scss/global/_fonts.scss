@@ -1,0 +1,66 @@
+@layer base {
+  @font-face {
+    font-family: 'Times New';
+    src: url('./../fonts/TimesNewRomanMTStd-Cond.woff2') format('woff2'),
+      url('./../fonts/TimesNewRomanMTStd-Cond.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Times New';
+    src: url('./../fonts/TimesNewRomanMTStd-CondIt.woff2') format('woff2'),
+      url('./../fonts/TimesNewRomanMTStd-CondIt.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Venus';
+    src: url('./../fonts/Venus-Medium.woff2') format('woff2'),
+      url('./../fonts/Venus-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  .venus-body {
+    @apply text-venus-body font-venus;
+    -webkit-font-smoothing: antialiased;
+
+    &.formatted {
+      a {
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        transition: opacity .3s;
+
+        &:hover {
+          opacity: .5;
+        }
+      }
+    }
+  }
+
+  .times-body {
+    @apply text-times-body font-times;
+    -webkit-font-smoothing: antialiased;
+
+    &.formatted {
+      a {
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        transition: opacity .3s;
+
+        &:hover {
+          opacity: .5;
+        }
+      }
+    }
+
+    &.formatted-strong {
+      strong {
+        @apply venus-body;
+        font-weight: normal;
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+@layer utilities {
+  @variants responsive {
+    
+  }
+}
+
+html {
+  font-size: 10px;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  height: 100%;
+  cursor: auto;
+
+  p,
+  span,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  a,
+  button {
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  button {
+    box-shadow: none;
+    outline: none;
+    background: none;
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+  }
+}
