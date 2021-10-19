@@ -1,13 +1,8 @@
-@layer utilities {
-  @variants responsive {
-    
-  }
-}
-
 html {
   font-size: 10px;
   width: 100%;
   -webkit-font-smoothing: antialiased;
+  overflow: hidden;
 }
 
 body {

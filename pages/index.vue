@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'open': open }" class="home h-screen w-screen fixed py-8 lg:py-12 px-8 lg:px-28">
+  <div :class="{ 'open': open }" class="home h-full w-full fixed py-8 lg:py-12 px-8 lg:px-28">
     <div class="relative top-0 left-0 w-full h-full flex flex-col justify-end">
       <div
         ref="top"
@@ -7,7 +7,7 @@
         v-html="renderRichText(data.intro_text)"
       ></div>
 
-      <div class="z-wrapper h-full w-full" :style="{ height: open ? `calc(100% - ${topHeight + bottomHeight}px)` : '0px' }">
+      <div ref="zWrapper" class="z-wrapper h-full w-full" :style="{ height: open ? `calc(100% - ${topHeight + bottomHeight}px)` : '0px' }">
         <ZIcon />
       </div>
 
@@ -28,7 +28,7 @@
           <p class="times-body mr-8">(current studio time & location)</p>
           <div class="flex">
             <p class="time venus-body mr-8">{{ time }}</p>
-            <p class="venus-body">Brooklyn, NY</p>
+            <p class="venus-body">{{ data.city_text }}</p>
           </div>
         </div>
       </div>
@@ -39,8 +39,8 @@
 <script>
 import { mapState } from 'vuex'
 import utils from '@/mixins/utils.js'
-import { format } from 'date-fns'
 import ZIcon from '@/components/ZIcon'
+import moment from 'moment-timezone'
 
 export default {
   components: { ZIcon },
@@ -50,7 +50,8 @@ export default {
       time: null,
       open: false,
       topHeight: 0,
-      bottomHeight: 0
+      bottomHeight: 0,
+      animating: false
     }
   },
   computed: {
@@ -75,10 +76,10 @@ export default {
     this.topHeight = this.$refs.top.clientHeight + 2 // + 2 to account for border
     this.bottomHeight = this.$refs.bottom.clientHeight
 
-    this.time = format(new Date(), 'hh:mm:ss')
+    this.time = moment().tz(this.data.timezone).format('hh:mm:ss')
 
     setInterval(() => {
-      this.time = format(new Date(), 'hh:mm:ss')
+      this.time = moment().tz(this.data.timezone).format('hh:mm:ss')
     }, 1000)
 
     if (this.isMobile) {
@@ -118,14 +119,24 @@ export default {
                   /* left swipe */
               }                       
           } else {
-              if ( yDiff > 0 ) {
+              if ( yDiff > 0 && !self.animating) {
                   /* down swipe */ 
                   // console.log('down')
                   self.open = true
-              } else { 
+                  self.animating = true
+
+                  setTimeout(() => {
+                    self.animating = false
+                  }, 1500)
+              } else if (yDiff < 0 && !self.animating) { 
                   /* up swipe */
-                  console.log('up')
+                  // console.log('up')
                   self.open = false
+                  self.animating = true
+
+                  setTimeout(() => {
+                    self.animating = false
+                  }, 1500)
               }                                                                 
           }
           /* reset values */
@@ -134,10 +145,23 @@ export default {
       };
     } else {
       document.addEventListener('wheel', e => {
-        if (e.deltaY > 0) {
+        console.log('wheeling')
+        if (e.deltaY > 0 && !this.animating) {
           this.open = true
-        } else {
+          this.animating = true
+
+          setTimeout(() => {
+            this.animating = false
+            console.log('finishedd')
+          }, 1500)
+        } else if (e.deltaY < 0 && !this.animating) {
           this.open = false
+          this.animating = true
+
+          setTimeout(() => {
+            this.animating = false
+            console.log('finished')
+          }, 1500)
         }
       })
     }
