@@ -7,29 +7,55 @@
         v-html="renderRichText(data.intro_text)"
       ></div>
 
-      <div ref="zWrapper" class="z-wrapper h-full w-full" :style="{ height: open ? `calc(100% - ${topHeight + bottomHeight}px)` : '0px' }">
-        <ZIcon />
-      </div>
-
-      <div ref="bottom" class="flex flex-col lg:flex-row justify-start lg:px-6 pt-8 lg:py-8">
-        <div class="flex flex-col lg:flex-row mb-8 lg:mb-0">
-          <p class="times-body mr-8">{{ data.links_pretext }}</p>
-          <div class="flex">
-            <a
-              v-for="(link, index) in data.links" 
-              :key="index"
-              :href="link.link.url"
-              class="venus-body lg:hover:opacity-50 transition-opacity duration-300 mr-8"
-            >{{ link.link_text}}</a>
+      <div ref="zWrapper" class="z-wrapper h-full w-full relative overflow-hidden" :style="{ height: open ? `calc(100% - ${topHeight + bottomHeight}px)` : '0px' }">
+        <div 
+          v-if="data.images"
+          class="carousel absolute top-0 left-0 w-full h-full p-12"
+        >
+          <div ref="carouselEl" class="swiper-container w-full h-full overflow-hidden">
+            <div class="swiper-wrapper">
+              <div 
+                v-for="(image, index) in data.images" 
+                :key="index" 
+                class="swiper-slide w-full h-full"
+              >
+                <img class="object-contain object-center w-full h-full" :src="image.image.url" :alt="image.image.alt">
+              </div>
+            </div>
           </div>
         </div>
 
+        <div class="w-full h-full pointer-events-none relative z-10">
+          <ZIcon />
+        </div>
+      </div>
+
+      <div ref="bottom" class="flex flex-col lg:flex-row justify-between lg:px-6 pt-8 lg:py-8">
         <div class="flex flex-col lg:flex-row">
-          <p class="times-body mr-8">(current studio time & location)</p>
-          <div class="flex">
-            <p class="time venus-body mr-8">{{ time }}</p>
-            <p class="venus-body">{{ data.city_text }}</p>
+          <div class="flex flex-col lg:flex-row mb-8 lg:mb-0">
+            <p class="times-body mr-8">{{ data.links_pretext }}</p>
+            <div class="flex">
+              <a
+                v-for="(link, index) in data.links" 
+                :key="index"
+                :href="link.link.url"
+                class="venus-body lg:hover:opacity-50 transition-opacity duration-300 mr-8"
+              >{{ link.link_text}}</a>
+            </div>
           </div>
+
+          <div class="flex flex-col lg:flex-row">
+            <p class="times-body mr-8">(current studio time & location)</p>
+            <div class="flex">
+              <p class="time venus-body mr-8">{{ time }}</p>
+              <p class="venus-body">{{ data.city_text }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="data.images" :class="{ 'opacity-0 pointer-events-none': !open }" class="hidden lg:flex transition-opacity duration-300">
+          <button @click.prevent="prev()" class="venus-body pr-5 lg:hover:opacity-50 transition-opacity duration-300">Prev</button>
+          <button @click.prevent="next()" class="venus-body lg:hover:opacity-50 transition-opacity duration-300">Next</button>
         </div>
       </div>
     </div>
@@ -41,6 +67,8 @@ import { mapState } from 'vuex'
 import utils from '@/mixins/utils.js'
 import ZIcon from '@/components/ZIcon'
 import moment from 'moment-timezone'
+import Swiper from 'swiper/swiper-bundle'
+import 'swiper/swiper-bundle.css'
 
 export default {
   components: { ZIcon },
@@ -51,7 +79,8 @@ export default {
       open: false,
       topHeight: 0,
       bottomHeight: 0,
-      animating: false
+      animating: false,
+      carousel: null
     }
   },
   computed: {
@@ -67,6 +96,12 @@ export default {
         ? this.$store.dispatch('setIsMobile', true)
         : this.$store.dispatch('setIsMobile', false)
       }
+    },
+    prev () {
+      this.carousel.slidePrev()
+    },
+    next () {
+      this.carousel.slideNext()
     }
   },
   created () {
@@ -145,14 +180,12 @@ export default {
       };
     } else {
       document.addEventListener('wheel', e => {
-        console.log('wheeling')
         if (e.deltaY > 0 && !this.animating) {
           this.open = true
           this.animating = true
 
           setTimeout(() => {
             this.animating = false
-            console.log('finishedd')
           }, 1500)
         } else if (e.deltaY < 0 && !this.animating) {
           this.open = false
@@ -160,9 +193,21 @@ export default {
 
           setTimeout(() => {
             this.animating = false
-            console.log('finished')
           }, 1500)
         }
+      })
+    }
+
+    if (this.data.images) {
+      const self = this
+      this.carousel = new Swiper(this.$refs.carouselEl, {
+        loop: true,
+        slidesPerView: 1,
+        spaceBetween: 0,
+        initialSlide: 0,
+        speed: 300,
+        allowTouchMove: self.isMobile,
+        init: true
       })
     }
 
@@ -183,6 +228,10 @@ export default {
     transition: height;
     transition-timing-function: cubic-bezier(.5,0,.1,1);
     transition-duration: .8s;
+  }
+
+  .carousel {
+    /* z-index: -1; */
   }
 
   .z-wrapper::v-deep .z-icon {
