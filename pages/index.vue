@@ -67,7 +67,7 @@ import { mapState } from 'vuex'
 import utils from '@/mixins/utils.js'
 import ZIcon from '@/components/ZIcon'
 import moment from 'moment-timezone'
-import Swiper from 'swiper/swiper-bundle'
+import Swiper from 'swiper/swiper-bundle.js'
 import 'swiper/swiper-bundle.css'
 
 export default {
@@ -140,40 +140,28 @@ export default {
           if ( ! xDown || ! yDown ) {
               return;
           }
-
-          var xUp = evt.touches[0].clientX;                                    
+                                           
           var yUp = evt.touches[0].clientY;
 
-          var xDiff = xDown - xUp;
           var yDiff = yDown - yUp;
                                                                               
-          if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
-              if ( xDiff > 0 ) {
-                  /* right swipe */ 
-              } else {
-                  /* left swipe */
-              }                       
-          } else {
-              if ( yDiff > 0 && !self.animating) {
-                  /* down swipe */ 
-                  // console.log('down')
-                  self.open = true
-                  self.animating = true
+          if ( yDiff > 0 && !self.animating) {
+              /* down swipe */
+              self.open = true
+              self.animating = true
 
-                  setTimeout(() => {
-                    self.animating = false
-                  }, 1500)
-              } else if (yDiff < 0 && !self.animating) { 
-                  /* up swipe */
-                  // console.log('up')
-                  self.open = false
-                  self.animating = true
+              setTimeout(() => {
+                self.animating = false
+              }, 1500)
+          } else if (yDiff < 0 && !self.animating) { 
+              /* up swipe */
+              self.open = false
+              self.animating = true
 
-                  setTimeout(() => {
-                    self.animating = false
-                  }, 1500)
-              }                                                                 
-          }
+              setTimeout(() => {
+                self.animating = false
+              }, 1500)
+          } 
           /* reset values */
           xDown = null;
           yDown = null;                                             
