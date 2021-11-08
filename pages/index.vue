@@ -9,7 +9,7 @@
       </div>
 
       <div ref="zWrapper" class="z-wrapper h-full w-full relative overflow-hidden" :style="{ height: open ? `calc(100% - ${topHeight + bottomHeight}px)` : '0px' }">
-        <!-- <div 
+        <div 
           v-if="data.images"
           class="carousel absolute top-0 left-0 w-full h-full py-12"
         >
@@ -27,7 +27,7 @@
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
 
         <div class="w-full h-full pointer-events-none relative px-8 lg:px-28">
           <ZIcon />
