@@ -22,6 +22,7 @@
                 v-for="(image, index) in data.images" 
                 :key="index" 
                 class="swiper-slide w-full h-full cursor-pointer"
+                :data-caption="image.caption"
               >
                 <img class="object-contain object-center w-full h-full cursor-pointer" :src="image.image.url" :alt="image.image.alt">
               </div>
@@ -56,6 +57,10 @@
             </div>
           </div>
         </div>
+
+        <div v-if="data.images" :class="{ 'opacity-0 pointer-events-none': !open }" class="hidden lg:block transition-opacity duration-300">
+          <p :class="{ 'opacity-0 pointer-events-none' : !currentCaption}" class="venus-body duration-300">{{ currentCaption }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -79,7 +84,8 @@ export default {
       topHeight: 0,
       bottomHeight: 0,
       animating: false,
-      carousel: null
+      carousel: null,
+      currentCaption: null
     }
   },
   computed: {
@@ -197,6 +203,9 @@ export default {
                 this.slideToClickedSlide()
               })
             })
+          },
+          slideChange: function () {
+            self.currentCaption = this.slides[this.realIndex].dataset.caption
           }
         },
         init: true
