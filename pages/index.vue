@@ -27,12 +27,12 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div class="w-full h-full pointer-events-none relative px-8 lg:px-28">
           <ZIcon />
         </div>
-      </div> -->
+      </div>
 
       <div ref="bottom" class="flex flex-col lg:flex-row justify-between lg:px-6 pt-8 lg:py-8 px-8 lg:px-28">
         <div class="flex flex-col lg:flex-row">
@@ -179,29 +179,29 @@ export default {
       })
     }
 
-    // if (this.data.images) {
-    //   const self = this
-    //   this.carousel = new Swiper(this.$refs.carouselEl, {
-    //     slidesPerView: 1.4,
-    //     spaceBetween: 30,
-    //     centeredSlides: true,
-    //     initialSlide: 0,
-    //     speed: 300,
-    //     allowTouchMove: self.isMobile,
-    //     on: {
-    //       afterInit: function () {
-    //         this.slides.forEach(slide => {
-    //           slide.addEventListener('click', e => {
-    //             e.preventDefault()
+    if (this.data.images) {
+      const self = this
+      this.carousel = new Swiper(this.$refs.carouselEl, {
+        slidesPerView: 1.4,
+        spaceBetween: 30,
+        centeredSlides: true,
+        initialSlide: 0,
+        speed: 300,
+        allowTouchMove: self.isMobile,
+        on: {
+          afterInit: function () {
+            this.slides.forEach(slide => {
+              slide.addEventListener('click', e => {
+                e.preventDefault()
 
-    //             this.slideToClickedSlide()
-    //           })
-    //         })
-    //       }
-    //     },
-    //     init: true
-    //   })
-    // }
+                this.slideToClickedSlide()
+              })
+            })
+          }
+        },
+        init: true
+      })
+    }
 
     window.addEventListener('resize', () => {
       this.topHeight = this.$refs.top.clientHeight + 2 // + 2 to account for border
