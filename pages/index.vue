@@ -1,36 +1,40 @@
 <template>
-  <div :class="{ 'open': open }" class="home h-full w-full fixed py-8 lg:py-12 px-8 lg:px-28">
+  <div :class="{ 'open': open }" class="home h-full w-full fixed py-8 lg:py-12">
     <div class="relative top-0 left-0 w-full h-full flex flex-col justify-end">
       <div
         ref="top"
-        class="top lg:px-6 py-8 times-body formatted-strong" 
-        v-html="renderRichText(data.intro_text)"
-      ></div>
+        class="top times-body formatted-strong px-8 lg:px-28"
+      >
+        <div class="inner lg:px-6 py-8" v-html="renderRichText(data.intro_text)"></div>
+      </div>
 
       <div ref="zWrapper" class="z-wrapper h-full w-full relative overflow-hidden" :style="{ height: open ? `calc(100% - ${topHeight + bottomHeight}px)` : '0px' }">
         <div 
           v-if="data.images"
-          class="carousel absolute top-0 left-0 w-full h-full p-12"
+          class="carousel absolute top-0 left-0 w-full h-full py-12"
         >
           <div ref="carouselEl" class="swiper-container w-full h-full overflow-hidden">
             <div class="swiper-wrapper">
+              <div class="swiper-slide w-full h-full opacity-0 cursor-pointer">
+                <img class="object-contain object-center w-full h-full cursor-pointer" :src="data.images[0].image.url" :alt="data.images[0].image.alt">
+              </div>
               <div 
                 v-for="(image, index) in data.images" 
                 :key="index" 
-                class="swiper-slide w-full h-full"
+                class="swiper-slide w-full h-full cursor-pointer"
               >
-                <img class="object-contain object-center w-full h-full" :src="image.image.url" :alt="image.image.alt">
+                <img class="object-contain object-center w-full h-full cursor-pointer" :src="image.image.url" :alt="image.image.alt">
               </div>
             </div>
           </div>
         </div>
 
-        <div class="w-full h-full pointer-events-none relative z-10">
+        <div class="w-full h-full pointer-events-none relative px-8 lg:px-28">
           <ZIcon />
         </div>
       </div>
 
-      <div ref="bottom" class="flex flex-col lg:flex-row justify-between lg:px-6 pt-8 lg:py-8">
+      <div ref="bottom" class="flex flex-col lg:flex-row justify-between lg:px-6 pt-8 lg:py-8 px-8 lg:px-28">
         <div class="flex flex-col lg:flex-row">
           <div class="flex flex-col lg:flex-row mb-8 lg:mb-0">
             <p class="times-body mr-8">{{ data.links_pretext }}</p>
@@ -51,11 +55,6 @@
               <p class="venus-body">{{ data.city_text }}</p>
             </div>
           </div>
-        </div>
-
-        <div v-if="data.images" :class="{ 'opacity-0 pointer-events-none': !open }" class="hidden lg:flex transition-opacity duration-300">
-          <button @click.prevent="prev()" class="venus-body pr-5 lg:hover:opacity-50 transition-opacity duration-300">Prev</button>
-          <button @click.prevent="next()" class="venus-body lg:hover:opacity-50 transition-opacity duration-300">Next</button>
         </div>
       </div>
     </div>
@@ -96,12 +95,6 @@ export default {
         ? this.$store.dispatch('setIsMobile', true)
         : this.$store.dispatch('setIsMobile', false)
       }
-    },
-    prev () {
-      this.carousel.slidePrev()
-    },
-    next () {
-      this.carousel.slideNext()
     }
   },
   created () {
@@ -189,12 +182,23 @@ export default {
     if (this.data.images) {
       const self = this
       this.carousel = new Swiper(this.$refs.carouselEl, {
-        loop: true,
-        slidesPerView: 1,
-        spaceBetween: 0,
+        slidesPerView: 1.4,
+        spaceBetween: 30,
+        centeredSlides: true,
         initialSlide: 0,
         speed: 300,
         allowTouchMove: self.isMobile,
+        on: {
+          afterInit: function () {
+            this.slides.forEach(slide => {
+              slide.addEventListener('click', e => {
+                e.preventDefault()
+
+                this.slideToClickedSlide()
+              })
+            })
+          }
+        },
         init: true
       })
     }
@@ -220,6 +224,8 @@ export default {
 
   .carousel {
     /* z-index: -1; */
+    opacity: 0;
+    transition: opacity .2s;
   }
 
   .z-wrapper::v-deep .z-icon {
@@ -234,7 +240,7 @@ export default {
     transition-duration: .8s;
   }
 
-  .top {
+  .top .inner {
     border-bottom: 2px solid black;
     transition: border;
     transition-duration: .8s;
@@ -244,7 +250,13 @@ export default {
     stroke-width: 0.5;
   }
 
-  .home.open .top {
+  .home.open .top .inner {
     border-bottom: 2px solid transparent;
+  }
+
+  .home.open .carousel {
+    opacity: 1;
+    transition: opacity .3s;
+    transition-delay: .3s;
   }
 </style>
