@@ -5,7 +5,7 @@
         ref="top"
         class="top times-body formatted-strong px-8 lg:px-28"
       >
-        <div class="inner lg:px-6 py-8" v-html="renderRichText(data.intro_text)"></div>
+        <div class="inner py-8" v-html="renderRichText(data.intro_text)"></div>
       </div>
 
       <div ref="zWrapper" class="z-wrapper h-full w-full relative overflow-hidden" :style="{ height: open ? `calc(100% - ${topHeight + bottomHeight}px)` : '0px' }">
