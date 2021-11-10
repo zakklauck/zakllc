@@ -5,30 +5,10 @@
         ref="top"
         class="top times-body formatted-strong px-8 lg:px-28"
       >
-        <div class="inner lg:px-6 py-8" v-html="renderRichText(data.intro_text)"></div>
+        <div class="inner py-8" v-html="renderRichText(data.intro_text)"></div>
       </div>
 
       <div ref="zWrapper" class="z-wrapper h-full w-full relative overflow-hidden" :style="{ height: open ? `calc(100% - ${topHeight + bottomHeight}px)` : '0px' }">
-        <!-- <div 
-          v-if="data.images"
-          class="carousel absolute top-0 left-0 w-full h-full py-12"
-        >
-          <div ref="carouselEl" class="swiper-container w-full h-full overflow-hidden">
-            <div class="swiper-wrapper">
-              <div class="swiper-slide w-full h-full opacity-0 cursor-pointer">
-                <img class="object-contain object-center w-full h-full cursor-pointer" :src="data.images[0].image.url" :alt="data.images[0].image.alt">
-              </div>
-              <div 
-                v-for="(image, index) in data.images" 
-                :key="index" 
-                class="swiper-slide w-full h-full cursor-pointer"
-              >
-                <img class="object-contain object-center w-full h-full cursor-pointer" :src="image.image.url" :alt="image.image.alt">
-              </div>
-            </div>
-          </div>
-        </div> -->
-
         <div class="w-full h-full pointer-events-none relative px-8 lg:px-28">
           <ZIcon />
         </div>

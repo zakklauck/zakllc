@@ -18,9 +18,9 @@ export default {
       { name: 'format-detection', content: 'telephone=no' },
       { hid: 'keywords', name: 'keywords', content: title}
     ],
-    // link: [
-    //   { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    // ]
+    link: [
+      { rel: 'icon', type: 'image/png', href: '/favicon.png' }
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -52,6 +52,9 @@ export default {
   pwa: {
     manifest: {
       lang: 'en'
+    },
+    icon: {
+      fileName: 'favicon.png'
     }
   },
 
