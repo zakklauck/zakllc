@@ -46,8 +46,8 @@ import { mapState } from 'vuex'
 import utils from '@/mixins/utils.js'
 import ZIcon from '@/components/ZIcon'
 import moment from 'moment-timezone'
-import Swiper from 'swiper/swiper-bundle.js'
-import 'swiper/swiper-bundle.css'
+// import Swiper from 'swiper/swiper-bundle.js'
+// import 'swiper/swiper-bundle.css'
 
 export default {
   components: { ZIcon },
@@ -81,8 +81,8 @@ export default {
     this.setIsMobile()
   },
   mounted () {
-    this.topHeight = this.$refs.top.clientHeight + 2 // + 2 to account for border
-    this.bottomHeight = this.$refs.bottom.clientHeight
+    // this.topHeight = this.$refs.top.clientHeight + 2 // + 2 to account for border
+    // this.bottomHeight = this.$refs.bottom.clientHeight
 
     this.time = moment().tz(this.data.timezone).format('hh:mm:ss')
 
@@ -90,103 +90,103 @@ export default {
       this.time = moment().tz(this.data.timezone).format('hh:mm:ss')
     }, 1000)
 
-    if (this.isMobile) {
-      document.addEventListener('touchstart', handleTouchStart, false);        
-      document.addEventListener('touchmove', handleTouchMove, false);
-      const self = this
+    // if (this.isMobile) {
+    //   document.addEventListener('touchstart', handleTouchStart, false);        
+    //   document.addEventListener('touchmove', handleTouchMove, false);
+    //   const self = this
 
-      var xDown = null;                                                        
-      var yDown = null;
+    //   var xDown = null;                                                        
+    //   var yDown = null;
 
-      function getTouches(evt) {
-        return evt.touches ||             // browser API
-              evt.originalEvent.touches; // jQuery
-      }                                                     
+    //   function getTouches(evt) {
+    //     return evt.touches ||             // browser API
+    //           evt.originalEvent.touches; // jQuery
+    //   }                                                     
                                                                               
-      function handleTouchStart(evt) {
-          const firstTouch = getTouches(evt)[0];                                      
-          xDown = firstTouch.clientX;                                      
-          yDown = firstTouch.clientY;                                      
-      };                                                
+    //   function handleTouchStart(evt) {
+    //       const firstTouch = getTouches(evt)[0];                                      
+    //       xDown = firstTouch.clientX;                                      
+    //       yDown = firstTouch.clientY;                                      
+    //   };                                                
                                                                               
-      function handleTouchMove(evt) {
-          if ( ! xDown || ! yDown ) {
-              return;
-          }
+    //   function handleTouchMove(evt) {
+    //       if ( ! xDown || ! yDown ) {
+    //           return;
+    //       }
                                            
-          var yUp = evt.touches[0].clientY;
+    //       var yUp = evt.touches[0].clientY;
 
-          var yDiff = yDown - yUp;
+    //       var yDiff = yDown - yUp;
                                                                               
-          if ( yDiff > 0 && !self.animating) {
-              /* down swipe */
-              self.open = true
-              self.animating = true
+    //       if ( yDiff > 0 && !self.animating) {
+    //           /* down swipe */
+    //           self.open = true
+    //           self.animating = true
 
-              setTimeout(() => {
-                self.animating = false
-              }, 1500)
-          } else if (yDiff < 0 && !self.animating) { 
-              /* up swipe */
-              self.open = false
-              self.animating = true
+    //           setTimeout(() => {
+    //             self.animating = false
+    //           }, 1500)
+    //       } else if (yDiff < 0 && !self.animating) { 
+    //           /* up swipe */
+    //           self.open = false
+    //           self.animating = true
 
-              setTimeout(() => {
-                self.animating = false
-              }, 1500)
-          } 
-          /* reset values */
-          xDown = null;
-          yDown = null;                                             
-      };
-    } else {
-      document.addEventListener('wheel', e => {
-        if (e.deltaY > 0 && !this.animating) {
-          this.open = true
-          this.animating = true
+    //           setTimeout(() => {
+    //             self.animating = false
+    //           }, 1500)
+    //       } 
+    //       /* reset values */
+    //       xDown = null;
+    //       yDown = null;                                             
+    //   };
+    // } else {
+    //   document.addEventListener('wheel', e => {
+    //     if (e.deltaY > 0 && !this.animating) {
+    //       this.open = true
+    //       this.animating = true
 
-          setTimeout(() => {
-            this.animating = false
-          }, 1500)
-        } else if (e.deltaY < 0 && !this.animating) {
-          this.open = false
-          this.animating = true
+    //       setTimeout(() => {
+    //         this.animating = false
+    //       }, 1500)
+    //     } else if (e.deltaY < 0 && !this.animating) {
+    //       this.open = false
+    //       this.animating = true
 
-          setTimeout(() => {
-            this.animating = false
-          }, 1500)
-        }
-      })
-    }
+    //       setTimeout(() => {
+    //         this.animating = false
+    //       }, 1500)
+    //     }
+    //   })
+    // }
 
-    if (this.data.images) {
-      const self = this
-      this.carousel = new Swiper(this.$refs.carouselEl, {
-        slidesPerView: 1.4,
-        spaceBetween: 30,
-        centeredSlides: true,
-        initialSlide: 0,
-        speed: 300,
-        allowTouchMove: self.isMobile,
-        on: {
-          afterInit: function () {
-            this.slides.forEach(slide => {
-              slide.addEventListener('click', e => {
-                e.preventDefault()
+    // if (this.data.images) {
+    //   const self = this
+    //   this.carousel = new Swiper(this.$refs.carouselEl, {
+    //     slidesPerView: 1.4,
+    //     spaceBetween: 30,
+    //     centeredSlides: true,
+    //     initialSlide: 0,
+    //     speed: 300,
+    //     allowTouchMove: self.isMobile,
+    //     on: {
+    //       afterInit: function () {
+    //         this.slides.forEach(slide => {
+    //           slide.addEventListener('click', e => {
+    //             e.preventDefault()
 
-                this.slideToClickedSlide()
-              })
-            })
-          }
-        },
-        init: true
-      })
-    }
+    //             this.slideToClickedSlide()
+    //           })
+    //         })
+    //       }
+    //     },
+    //     init: true
+    //   })
+    // }
 
-    window.addEventListener('resize', () => {
-      this.topHeight = this.$refs.top.clientHeight + 2 // + 2 to account for border
-      this.bottomHeight = this.$refs.bottom.clientHeight
-    })
+    // window.addEventListener('resize', () => {
+    //   this.topHeight = this.$refs.top.clientHeight + 2 // + 2 to account for border
+    //   this.bottomHeight = this.$refs.bottom.clientHeight
+    // })
   }
 }
 </script>
